@@ -19,6 +19,13 @@
 #
 
 class puppet {
+  $puppet_default_config = $kernel ? {
+    freebsd => '/usr/local/etc/puppet/puppet.conf',
+    default => '/etc/puppet/puppet.conf',
+  }
+
+  if $puppet_config == '' { $puppet_config = $puppet_default_config }
+
   case $kernel {
     linux: { 
       case $operatingsystem {
