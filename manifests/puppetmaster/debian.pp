@@ -1,6 +1,5 @@
 class puppet::puppetmaster::debian inherits puppet::puppetmaster::package {
 
-
   if $puppetmaster_mode != 'passenger' {
     case $lsbdistcodename {
       squeeze,sid: {
