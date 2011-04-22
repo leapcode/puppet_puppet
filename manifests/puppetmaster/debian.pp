@@ -8,12 +8,19 @@ class puppet::puppetmaster::debian inherits puppet::puppetmaster::package {
     }
   }
 
+  if $puppetmaster_mode == 'passenger' {
+    $puppetmaster_default_nofity = 'Exec[notify_passenger_puppetmaster]'
+  }
+  
   file { '/etc/default/puppetmaster':
     source => [ "puppet:///modules/site-puppet/master/debian/${fqdn}/puppetmaster",
                 "puppet:///modules/site-puppet/master/debian/${domain}/puppetmaster",
                 "puppet:///modules/site-puppet/master/debian/puppetmaster",
                 "puppet:///modules/puppet/master/debian/puppetmaster" ],
-    notify => Service[puppetmaster],
+    notify => $puppetmaster_default_nofity ? {
+    '' => Service[puppetmaster],
+    default => Exec['notify_passenger_puppetmaster']
+    },
     owner => root, group => 0, mode => 0644;
   }
 }

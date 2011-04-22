@@ -11,8 +11,8 @@ class puppet::puppetmaster::linux inherits puppet::linux {
       enable => true,
       require => [ Package[puppet] ],
     }
-  }
-  Service[puppet]{
-    require +> Service[puppetmaster],
+    Service[puppet]{
+      require +> Service[puppetmaster],
+    }
   }
 }
