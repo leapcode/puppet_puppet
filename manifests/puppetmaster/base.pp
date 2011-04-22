@@ -1,8 +1,11 @@
 class puppet::puppetmaster::base inherits puppet::base {
 
   File[puppet_config]{
-    source => [ "puppet:///modules/site-puppet/master/puppet.conf",
-                "puppet:///modules/puppet/master/puppet.conf" ],
+    source => [
+                "puppet:///modules/site-puppet/master/${fqdn}/puppet.conf",
+                "puppet:///modules/site-puppet/master/puppet.conf",
+                "puppet:///modules/puppet/master/puppet.conf",
+    ],
   }
 
   if !$puppet_fileserverconfig { $puppet_fileserverconfig  = '/etc/puppet/fileserver.conf' }
