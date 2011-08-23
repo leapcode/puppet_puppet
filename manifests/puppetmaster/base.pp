@@ -5,21 +5,14 @@ class puppet::puppetmaster::base inherits puppet::base {
                 "puppet:///modules/puppet/master/puppet.conf" ],
   }
 
-  # This is not in puppet::puppetmaster since we'd like for
-  # puppet::puppetmaster::cluster to work in FreeBSD too.
-  $puppet_default_config_dir = $operatingsystem ? {
-    freebsd => "/usr/local/etc/puppet",
-    default => "/etc/puppet",
-  }
-
-  if !$puppet_fileserverconfig { $puppet_fileserverconfig  = "${puppet_default_config_dir}/fileserver.conf" }
+  if !$puppet_fileserverconfig { $puppet_fileserverconfig  = "${puppet::default_config_dir}/fileserver.conf" }
 
   file { "$puppet_fileserverconfig":
     source => [ "puppet:///modules/site-puppet/master/${fqdn}/fileserver.conf",
                 "puppet:///modules/site-puppet/master/fileserver.conf",
                 "puppet:///modules/puppet/master/fileserver.conf" ],
     owner => root, group => puppet, mode => 640;
-  } 
+  }
 
   if $puppetmaster_storeconfigs {
     include puppet::puppetmaster::storeconfigs

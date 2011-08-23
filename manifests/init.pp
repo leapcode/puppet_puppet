@@ -19,15 +19,17 @@
 #
 
 class puppet {
-  $puppet_default_config = $kernel ? {
-    freebsd => '/usr/local/etc/puppet/puppet.conf',
-    default => '/etc/puppet/puppet.conf',
+  $default_config_dir = $operatingsystem ? {
+    freebsd => "/usr/local/etc/puppet",
+    default => "/etc/puppet",
   }
+
+  $puppet_default_config = "$default_config_dir/puppet.conf"
 
   if $puppet_config == '' { $puppet_config = $puppet_default_config }
 
   case $kernel {
-    linux: { 
+    linux: {
       case $operatingsystem {
         gentoo: { include puppet::gentoo }
         centos: { include puppet::centos }
