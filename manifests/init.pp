@@ -36,6 +36,7 @@ class puppet {
       }
     }
     openbsd: { include puppet::openbsd }
+    freebsd: { include puppet::freebsd }
     default: { include puppet::base }
   }
 
