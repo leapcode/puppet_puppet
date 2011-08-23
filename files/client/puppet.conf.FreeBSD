@@ -3,7 +3,7 @@
     vardir=/var/puppet
     rundir=/var/run/puppet
     
-    ssldir=/usr/local/etc/puppet/ssl
+    ssldir=/var/puppet/ssl
     
     # Where 3rd party plugins and modules are installed
     libdir = $vardir/lib
