@@ -25,7 +25,7 @@ class puppet::puppetmaster::package::debian inherits puppet::puppetmaster::packa
   }
   
   package { "puppetmaster-common": 
-        ensure => $puppetmaster_common_ensure ? {
+        ensure => $puppetmaster_common_required ? {
         '' => absent,
         default => $puppetmaster_common_ensure
         },
