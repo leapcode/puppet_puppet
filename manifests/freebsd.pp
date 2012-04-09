@@ -1,11 +1,20 @@
 class puppet::freebsd inherits puppet::base {
 
-  if !$puppet_ensure_version { $puppet_ensure_version = 'installed' }
+  case $puppet_ensure_version {
+    '': { $puppet_ensure_version = 'installed' }
+    'removed','absent','installed', 'present': {}  # those values are OK
+    default: { fail('Package providers for FreeBSD cannot ensure that a specific version is installed.') }
+  }
+  case $facter_ensure_version {
+    '': { $facter_ensure_version = 'installed' }
+    'removed','absent','installed', 'present': {}  # those values are OK
+    default: { fail('Package providers for FreeBSD cannot ensure that a specific version is installed.') }
+  }
+
   package { 'puppet':
     ensure => $puppet_ensure_version,
   }
 
-  if !$facter_ensure_version { $facter_ensure_version = 'installed' }
   package { 'facter':
     ensure => $facter_ensure_version,
   }
