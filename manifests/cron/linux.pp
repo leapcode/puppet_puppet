@@ -16,5 +16,6 @@ class puppet::cron::linux inherits puppet::linux {
     source => undef,
     content => "#run puppet\n$puppet_crontime root output=\$(/usr/sbin/puppetd --onetime --no-daemonize --splay --config=/etc/puppet/puppet.conf --color false); ret=\$?; printf \"\\%s\" \"\$output\" | grep -E '(^err:|^alert:|^emerg:|^crit:)'; exit \$ret\n",
     before => Service['puppet'],
+    ensure => present
   }
 }
