@@ -13,9 +13,9 @@ class puppet::puppetmaster::debian inherits puppet::puppetmaster::package {
   }
   
   file { '/etc/default/puppetmaster':
-    source => [ "puppet:///modules/site-puppet/master/debian/${fqdn}/puppetmaster",
-                "puppet:///modules/site-puppet/master/debian/${domain}/puppetmaster",
-                "puppet:///modules/site-puppet/master/debian/puppetmaster",
+    source => [ "puppet:///modules/site_puppet/master/debian/${fqdn}/puppetmaster",
+                "puppet:///modules/site_puppet/master/debian/${domain}/puppetmaster",
+                "puppet:///modules/site_puppet/master/debian/puppetmaster",
                 "puppet:///modules/puppet/master/debian/puppetmaster" ],
     notify => $puppetmaster_default_nofity ? {
     '' => Service[puppetmaster],
