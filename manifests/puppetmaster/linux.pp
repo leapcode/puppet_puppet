@@ -6,6 +6,15 @@ class puppet::puppetmaster::linux inherits puppet::linux {
       #command => 'touch /etc/puppet/rack/tmp/restart.txt && sleep 1 && rm /etc/puppet/rack/tmp/restart.txt',
       command => '/etc/init.d/apache2 reload',
     }
+
+    service { 'puppetmaster':
+      ensure     => running,
+      pattern    => 'apache2',
+      hasstatus  => true,
+      hasrestart => true,
+      require    => [ Package[puppet] ],
+    }
+
   } else {
     service { 'puppetmaster':
       ensure => running,
