@@ -1,41 +1,13 @@
-class puppet::puppetmaster::package::debian inherits puppet::puppetmaster::package::base {
+class puppet::puppetmaster::package::debian {
 
-  if !$puppetmaster_ensure_version {
-    $puppetmaster_ensure_version = 'installed'
-    case $lsbdistcodename {
-      wheezy,sid: {
-        $puppetmaster_common_required = 'puppetmaster-common'
-        $puppetmaster_common_ensure = $puppetmaster_ensure_version
-      }
-      default: {
-        if (versioncmp($puppetmaster_ensure_version, "2.6.7") >= 0) {
-          $puppetmaster_common_requred = 'puppetmaster-common'
-          $puppetmaster_common_ensure = $puppetmaster_ensure_version
-        }
-      }
-    }
-  }
-  else {
-    apt::preferences_snippet {
-      'puppet_passenger':
-        package => 'puppet*',
-        pin => "version $puppetmaster_ensure_version",
-        priority => 2000;
-    }
-  }
-  
-  Package["puppetmaster"]{
-        require => $puppetmaster_common_required ? {
-        '' => undef,
-        default => Package["$puppetmaster_common_required"]
-        },
-        ensure => $puppetmaster_ensure_version,
-  }
-
-  package { "puppetmaster-common": 
-        ensure => $puppetmaster_common_required ? {
-        '' => absent,
-        default => installed
-        },
+  include puppet::puppetmaster::package::base
+    
+  apt::preferences_snippet {
+    'puppet_passenger':
+      package => 'puppet*',
+      pin => "version $puppetmaster_ensure_version",
+      priority => 2000,
+      notify => Exec['refresh_apt'],
+      before => Package['puppetmaster'];
   }
 }
