@@ -12,6 +12,18 @@ Usage
 The module currently looks for values on different variables to adjust
 configuration of the master.
 
+Installing a specific versions
+------------------------------
+
+If you need to install a different version of puppet, other than the most recent,
+you can set the following variable:
+
+$puppet_ensure_version = '2.7.18-1~bpo60+1'
+
+You can also specify a different facter version by setting the following variable:
+
+$facter_ensure_version = '1.6.9-2~bpo60+2'
+
 Run puppet by cron:
 -------------------
 
@@ -48,6 +60,13 @@ mode, you can set $puppetmaster_mode either to:
 
 In both cases you have to setup the appropriate frontends (apache vhost
 configuration/nginx vhost configuration) on your own.
+
+If you need to install a specific version of puppetmaster, you can specify the
+version to be installed by doing the following:
+
+$puppetmaster_ensure_version = '2.7.18-1~bpo60+1'
+
+NOTE: You will need the apt module in order to specify the puppetmaster version.
 
 Munin
 -----
