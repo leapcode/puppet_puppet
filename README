@@ -9,8 +9,8 @@ files, under:
 Usage
 =====
 
-The module currently looks for values on different variables to adjust
-configuration of the master.
+The module currently looks for different variable values to adjust configuration
+of the master.
 
 Installing a specific versions
 ------------------------------
