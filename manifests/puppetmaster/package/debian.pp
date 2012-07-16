@@ -15,6 +15,14 @@ class puppet::puppetmaster::package::debian inherits puppet::puppetmaster::packa
       }
     }
   }
+  else {
+    apt::preferences_snippet {
+      'puppet_passenger':
+        package => 'puppet*',
+        pin => "version $puppetmaster_ensure_version",
+        priority => 2000;
+    }
+  }
   
   Package["puppetmaster"]{
         require => $puppetmaster_common_required ? {
@@ -23,11 +31,11 @@ class puppet::puppetmaster::package::debian inherits puppet::puppetmaster::packa
         },
         ensure => $puppetmaster_ensure_version,
   }
-  
+
   package { "puppetmaster-common": 
         ensure => $puppetmaster_common_required ? {
         '' => absent,
-        default => $puppetmaster_common_ensure
+        default => installed
         },
   }
 }
