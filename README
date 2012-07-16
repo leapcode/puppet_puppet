@@ -67,6 +67,7 @@ version to be installed by doing the following:
 $puppetmaster_ensure_version = '2.7.18-1~bpo60+1'
 
 NOTE: You will need the apt module in order to specify the puppetmaster version.
+Also, this functionality is only implemented for Debian and derived distributions.
 
 Munin
 -----
