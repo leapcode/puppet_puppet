@@ -1,6 +1,9 @@
 class puppet::puppetmaster::linux inherits puppet::linux {
   
   if $puppetmaster_mode == 'passenger' {
+
+    require('apache::base')
+    
     exec { 'notify_passenger_puppetmaster':
       refreshonly => true,
       command => 'touch /etc/puppet/rack/tmp/restart.txt && sleep 1 && rm /etc/puppet/rack/tmp/restart.txt',
@@ -11,8 +14,8 @@ class puppet::puppetmaster::linux inherits puppet::linux {
       enable => true,
       require => [ Package[puppet] ],
     }
-  }
-  Service[puppet]{
-    require +> Service[puppetmaster],
+    Service[puppet]{
+      require +> Service[puppetmaster],
+    }
   }
 }
