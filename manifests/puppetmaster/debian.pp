@@ -13,7 +13,10 @@ class puppet::puppetmaster::debian inherits puppet::puppetmaster::package {
                 "puppet:///modules/site-puppet/master/debian/${domain}/puppetmaster",
                 "puppet:///modules/site-puppet/master/debian/puppetmaster",
                 "puppet:///modules/puppet/master/debian/puppetmaster" ],
-    notify => Service[puppetmaster],
+    notify => $puppetmaster_mode ? {
+      'passenger' => Exec['notify_passenger_puppetmaster'],
+      default => Service[puppetmaster],
+    },
     owner => root, group => 0, mode => 0644;
   }
 }
