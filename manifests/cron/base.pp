@@ -6,12 +6,12 @@ class puppet::cron::base inherits puppet::base {
   }
 
   case $operatingsystem {
-    debian,openbsd,ubuntu: {
+    openbsd: {
       #it's already disabled
     }
     default: {
       $puppet_majorversion = regsubst($puppetversion,'^(\d+\.\d+).*$','\1')
-      if $puppet_majorversion == '2.6' {  
+      if $puppet_majorversion >= '2.6' {  
         Service['puppet']{
           ensure => stopped,
         }
