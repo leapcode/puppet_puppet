@@ -29,4 +29,5 @@ class puppet::puppetmaster::passenger inherits puppet::puppetmaster::base {
           owner  => puppet, group => 0, mode => '0644';
       }
     }
+  }
 }
