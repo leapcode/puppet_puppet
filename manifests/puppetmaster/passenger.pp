@@ -7,7 +7,7 @@ class puppet::puppetmaster::passenger inherits puppet::puppetmaster::base {
   # A reference configuration is available at :
   # http://github.com/reductivelabs/puppet/tree/master/ext/rack
 
-  case $operatingsystem {
+  case $::operatingsystem {
     debian: {
       package { 'puppetmaster-passenger': ensure => installed }
       file {
