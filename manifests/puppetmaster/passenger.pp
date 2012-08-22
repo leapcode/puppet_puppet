@@ -13,7 +13,7 @@ class puppet::puppetmaster::passenger inherits puppet::puppetmaster::base {
       owner => root, group => 0, mode => 0755;
 
     '/etc/puppet/rack/config.ru':
-      source => [ "puppet:///modules/site-puppet/master/config.ru",
+      source => [ "puppet:///modules/site_puppet/master/config.ru",
                   "puppet:///modules/puppet/master/config.ru" ],
       owner => puppet, group => 0, mode => 0644;
   }
