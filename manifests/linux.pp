@@ -14,6 +14,10 @@ class puppet::linux inherits puppet::base {
     require => Package[puppet],
   }
 
+  file { '/etc/cron.d/puppetd':
+    ensure => absent
+  }
+  # For backwards compatibility, remove this so that the cron is not duplicated
   file { '/etc/cron.d/puppetd.cron':
     ensure => absent
   }
