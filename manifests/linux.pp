@@ -15,12 +15,6 @@ class puppet::linux inherits puppet::base {
   }
 
   file { '/etc/cron.d/puppetd.cron':
-    ensure => absent,
-    source => [ 'puppet:///modules/site-puppet/cron.d/puppetd',
-                "puppet:///modules/puppet/cron.d/puppetd.${::operatingsystem}",
-                'puppet:///modules/puppet/cron.d/puppetd' ],
-    owner  => root,
-    group  => 0,
-    mode   => '0644'
+    ensure => absent
   }
 }
