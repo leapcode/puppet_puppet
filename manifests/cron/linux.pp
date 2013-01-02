@@ -13,11 +13,13 @@ class puppet::cron::linux inherits puppet::linux {
     $puppet_crontime = "${puppet_crontime_interval_minute},${puppet_crontime_interval_minute2} * * * *"
   }
 
+  include ::cron
+
   File['/etc/cron.d/puppetd.cron']{
     source  => undef,
     content => "#run puppet\n${puppet_crontime} root output=\$(/usr/sbin/puppetd --onetime --no-daemonize --splay --config=/etc/puppet/puppet.conf --color false); ret=\$?; printf \"\\%s\" \"\$output\" | grep -E '(^err:|^alert:|^emerg:|^crit:)'; exit \$ret\n",
     before  => Service['puppet'],
     ensure  => present,
-    notify  => service['cron']
+    notify  => Service['cron']
   }
 }

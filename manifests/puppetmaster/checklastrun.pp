@@ -12,6 +12,8 @@ class puppet::puppetmaster::checklastrun {
     default => "--timeout ${::puppet_lastruncheck_timeout}"
   }
 
+  include ::cron
+
   file{
     '/usr/local/sbin/puppetlast':
       source => [ 'puppet:///modules/puppet/master/lastruncheck' ],
@@ -25,6 +27,6 @@ class puppet::puppetmaster::checklastrun {
       owner   => root,
       group   => 0,
       mode    => '0644',
-      notify  => service['cron']
+      notify  => Service['cron']
   }
 }
