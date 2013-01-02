@@ -4,10 +4,8 @@ class puppet::puppetmaster::debian {
   include puppet::puppetmaster::linux
   
   if $puppetmaster_mode != 'passenger' {
-    case $lsbdistcodename {
-      squeeze,sid: {
-        Service['puppetmaster'] { hasstatus => true, hasrestart => true }
-      }
+    if $puppet_majorversion >= '2.6' {  
+      Service['puppetmaster'] { hasstatus => true, hasrestart => true }
     }
   }
 
