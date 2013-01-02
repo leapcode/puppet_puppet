@@ -16,6 +16,17 @@ class puppet::puppetmaster::passenger inherits puppet::puppetmaster::base {
                       'puppet:///modules/puppet/master/config.ru' ],
           owner  => puppet, group => 0, mode => '0644';
       }
+
+      include apt
+
+      apt::preferences_snippet {
+        'puppet_passenger':
+          package => 'puppet*',
+          pin => "version $puppetmaster_ensure_version",
+          priority => 2000,
+          notify => Exec['refresh_apt'],
+          before => Package['puppetmaster'];
+      }
     }
     default: {
       file {

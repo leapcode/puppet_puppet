@@ -1,4 +1,6 @@
-class puppet::puppetmaster::package::base inherits puppet::puppetmaster::package {
+class puppet::puppetmaster::package::base inherits puppet::puppetmaster::linux {
+
+  include puppet::puppetmaster::package
 
   package { 'puppetmaster':
     ensure => present,

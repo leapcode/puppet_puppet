@@ -1,10 +1,9 @@
-class puppet::puppetmaster::debian {
+class puppet::puppetmaster::debian inherits puppet::puppetmaster::linux {
 
   include puppet::puppetmaster::package
-  include puppet::puppetmaster::linux
-  
+
   if $puppetmaster_mode != 'passenger' {
-    if $puppet_majorversion >= '2.6' {  
+    if $puppet::base::puppet_majorversion >= '2.6' {
       Service['puppetmaster'] { hasstatus => true, hasrestart => true }
     }
   }
