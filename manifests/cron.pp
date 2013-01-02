@@ -1,6 +1,6 @@
 class puppet::cron inherits puppet {
   case $operatingsystem {
-    debian: { include puppet::cron::debian }
+    debian,ubuntu: { include puppet::cron::linux }
     openbsd: { include puppet::cron::openbsd }
     freebsd: { include puppet::cron::freebsd }
     default: {
