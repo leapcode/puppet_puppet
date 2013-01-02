@@ -25,5 +25,6 @@ class puppet::puppetmaster::checklastrun {
       owner   => root,
       group   => 0,
       mode    => '0644',
+      notify  => service['cron']
   }
 }
