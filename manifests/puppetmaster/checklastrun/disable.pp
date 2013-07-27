@@ -5,7 +5,7 @@ class puppet::puppetmaster::checklastrun::disable inherits puppet::puppetmaster:
     ensure => absent,
   }
 
-  File['/etc/cron.d/puppetlast.cron']{
+  File['/etc/cron.d/puppetlast']{
     ensure => absent,
   }
 }
