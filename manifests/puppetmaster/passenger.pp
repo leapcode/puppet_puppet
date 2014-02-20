@@ -17,7 +17,9 @@ class puppet::puppetmaster::passenger inherits puppet::puppetmaster::base {
           owner  => puppet, group => 0, mode => '0644';
       }
 
-      include apt
+      if !defined('apt') {
+        include apt
+      }
 
       $puppet_passenger_snippet = $puppetmaster_ensure_version ? {
         undef   => absent,
