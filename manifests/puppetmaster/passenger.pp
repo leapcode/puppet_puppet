@@ -19,13 +19,19 @@ class puppet::puppetmaster::passenger inherits puppet::puppetmaster::base {
 
       include apt
 
+      $puppet_passenger_snippet = $puppetmaster_ensure_version ? {
+        undef   => absent,
+        default => present,
+      }
+
       apt::preferences_snippet {
         'puppet_passenger':
-          package => 'puppet*',
-          pin => "version $puppetmaster_ensure_version",
-          priority => 2000,
-          notify => Exec['refresh_apt'],
-          before => Package['puppetmaster'];
+          ensure    => $puppet_passenger_snippet,
+          package   => 'puppet*',
+          pin       => "version $puppetmaster_ensure_version",
+          priority  => 2000,
+          notify    => Exec['refresh_apt'],
+          before    => Package['puppetmaster'];
       }
     }
     default: {
