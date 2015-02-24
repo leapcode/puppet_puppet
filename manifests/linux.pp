@@ -1,13 +1,12 @@
+# puppet on linux
 class puppet::linux inherits puppet::base {
 
-  if !$puppet_ensure_version { $puppet_ensure_version = 'installed' }
   package { 'puppet':
-    ensure => $puppet_ensure_version,
+    ensure => $puppet::ensure_version,
   }
 
-  if !$facter_ensure_version { $facter_ensure_version = 'installed' }
   package { 'facter':
-    ensure => $facter_ensure_version,
+    ensure => $puppet::ensure_facter_version,
   }
 
   Service['puppet']{
@@ -15,10 +14,11 @@ class puppet::linux inherits puppet::base {
   }
 
   file { '/etc/cron.d/puppetd':
-    ensure => absent
-  }
-  # For backwards compatibility, remove this so that the cron is not duplicated
-  file { '/etc/cron.d/puppetd.cron':
-    ensure => absent
+    source  => ['puppet:///modules/site_puppet/cron.d/puppetd',
+                "puppet:///modules/puppet/cron.d/puppetd.${::operatingsystem}",
+                'puppet:///modules/puppet/cron.d/puppetd' ],
+    owner   => root,
+    group   => 0,
+    mode    => '0644',
   }
 }

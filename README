@@ -31,14 +31,14 @@ By default puppet runs as its own daemon. However, you might want to run puppet
 by cron. To do this, you have to include `puppet::cron` instead of `puppet`. If
 you include puppet::cron then by default puppet will run twice an hour, spread
 amongst the half an hour depending on the host's fqdn. If you wish to change
-that interval, you can tweak $puppet_crontime (NOTE: this variable only operates
+that interval, you can tweak $crontime (NOTE: this variable only operates
 on the minute cron field).
 
 Clientbucket cleanup:
 ---------------------
 
 The individual node client buckets aren't cleaned up automatically, unless you
-specify $puppet_cleanup_clientbucket = 'X', where X is the number of days you
+specify cleanup_clientbucket = 'X', where X is the number of days you
 want to keep clientbucket files for.
 
 Use http compression
