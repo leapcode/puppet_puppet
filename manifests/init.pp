@@ -12,25 +12,26 @@
 # Marcel Haerry haerry+puppet(at)puzzle.ch
 # Simon Josi josi+puppet(at)puzzle.ch
 #
-# This program is free software; you can redistribute 
-# it and/or modify it under the terms of the GNU 
-# General Public License version 3 as published by 
+# This program is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License version 3 as published by
 # the Free Software Foundation.
 #
-
-class puppet {
-  $default_config_dir = $operatingsystem ? {
-    freebsd => "/usr/local/etc/puppet",
-    default => "/etc/puppet",
-  }
-
-  $puppet_default_config = "$default_config_dir/puppet.conf"
-
-  if $puppet_config == '' { $puppet_config = $puppet_default_config }
-
-  case $kernel {
+# Manage the puppet client
+class puppet(
+  $config                           = '/etc/puppet/puppet.conf',
+  $config_content                   = false,
+  $http_compression                 = false,
+  $cleanup_clientbucket             = false,
+  $ensure_version                   = 'installed',
+  $ensure_facter_version            = 'installed',
+  $shorewall_puppetmaster           = false,
+  $shorewall_puppetmaster_port      = 8140,
+  $shorewall_puppetmaster_signport  = 8141
+){
+  case $::kernel {
     linux: {
-      case $operatingsystem {
+      case $::operatingsystem {
         gentoo: { include puppet::gentoo }
         centos: { include puppet::centos }
         debian,ubuntu: { include puppet::debian }
@@ -38,11 +39,14 @@ class puppet {
       }
     }
     openbsd: { include puppet::openbsd }
-    freebsd: { include puppet::freebsd }
     default: { include puppet::base }
   }
 
-  if $use_shorewall {
-    include shorewall::rules::out::puppet
+  if $shorewall_puppetmaster {
+    class{'shorewall::rules::out::puppet':
+      puppetserver          => $shorewall_puppetmaster,
+      puppetserver_port     => $shorewall_puppetmaster_port,
+      puppetserver_signport => $shorewall_puppetmaster_signport,
+    }
   }
 }

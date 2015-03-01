@@ -1,4 +1,5 @@
-class puppet::puppetmaster::checklastrun::disable inherits puppet::puppetmaster::checklastrun {
+# disable the check
+class puppet::master::checklastrun::disable inherits puppet::master::checklastrun {
 
   File['/usr/local/sbin/puppetlast']{
     source => undef,
