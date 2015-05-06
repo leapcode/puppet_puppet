@@ -3,6 +3,5 @@
 
 class puppet::master::storeconfigs {
   include rails
-  include mysql::server
   include mysql::client::ruby
 }
