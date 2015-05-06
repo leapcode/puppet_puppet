@@ -4,7 +4,7 @@ class puppet::cron(
   $stop_service                     = true,
   $config                           = '/etc/puppet/puppet.conf',
   $config_content                   = false,
-  $http_compression                 = 'puppet_http_compression',
+  $http_compression                 = false,
   $cleanup_clientbucket             = false,
   $ensure_version                   = 'installed',
   $ensure_facter_version            = 'installed',
