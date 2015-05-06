@@ -6,6 +6,7 @@ class puppet::master(
   $http_compression                 = false,
   $cleanup_clientbucket             = false,
   $cron_time                        = false,
+  $storeconfigs                     = false,
   $ensure_version                   = 'installed',
   $ensure_facter_version            = 'installed',
   $lastruncheck_cron                = '40 10 * * *',
