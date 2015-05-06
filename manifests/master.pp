@@ -15,7 +15,7 @@ class puppet::master(
   $mode                             = 'webrick',
   $cleanup_reports                  = '30',
   $reports_dir                      = '/var/lib/puppet/reports',
-  $shorewall_puppetmaster           = "domain.${::domain}",
+  $shorewall_puppetmaster           = "puppet.${::domain}",
   $shorewall_puppetmaster_port      = 8140,
   $shorewall_puppetmaster_signport  = 8141,
   $manage_munin                     = false
