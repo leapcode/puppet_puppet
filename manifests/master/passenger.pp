@@ -1,7 +1,7 @@
 # class to use passenger for serving puppetmaster
 class puppet::master::passenger inherits puppet::master {
 
-  class { 'passenger':
+  class { '::passenger':
     manage_munin => $puppet::master::manage_munin,
   }
 
