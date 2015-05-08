@@ -1,7 +1,9 @@
 # class to use passenger for serving puppetmaster
 class puppet::master::passenger inherits puppet::master {
 
-  include ::passenger
+  class { 'passenger':
+    manage_munin => $puppet::master::manage_munin,
+  }
 
   # A reference configuration is available at :
   # http://github.com/reductivelabs/puppet/tree/master/ext/rack
