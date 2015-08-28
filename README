@@ -16,13 +16,13 @@ Installing a specific versions
 ------------------------------
 
 If you need to install a different version of puppet, other than the most recent,
-you can set the following variable:
+you can pass the following parameter:
 
-$puppet_ensure_version = '2.7.18-1~bpo60+1'
+puppet_ensure_version => '2.7.18-1~bpo60+1'
 
-You can also specify a different facter version by setting the following variable:
+You can also specify a different facter version by passing the following parameter:
 
-$facter_ensure_version = '1.6.9-2~bpo60+2'
+facter_ensure_version => '1.6.9-2~bpo60+2'
 
 Run puppet by cron:
 -------------------
@@ -38,19 +38,20 @@ Clientbucket cleanup:
 ---------------------
 
 The individual node client buckets aren't cleaned up automatically, unless you
-specify cleanup_clientbucket = 'X', where X is the number of days you
-want to keep clientbucket files for.
+specify cleanup_clientbucket => 'X', where X is a value that is valid for
+passing to the tidy resource and how long you want to keep clientbucket files
+for.
 
 Use http compression
 --------------------
 
-To enable http compression on the clients, set $puppet_http_compression = true
+To enable http compression on the clients, set puppet_http_compression => true
 
 Puppetmaster Mode:
 ------------------
 
 If you want to run the puppetmaster in a non-webrick based
-mode, you can set $puppetmaster_mode either to:
+mode, you can set the mode parameter either to:
 
 * passenger, run puppetmaster as a passenger application, you will need the
   passenger module to take advantage of this
@@ -64,26 +65,17 @@ configuration/nginx vhost configuration) on your own.
 If you need to install a specific version of puppetmaster, you can specify the
 version to be installed by doing the following:
 
-$puppetmaster_ensure_version = '2.7.18-1~bpo60+1'
+ensure_version =>'2.7.18-1~bpo60+1'
 
 NOTE: You will need the apt module in order to specify the puppetmaster version.
 Also, this functionality is only implemented for Debian and derived distributions.
-
-This is the apparent minimum manifest for installing puppetmaster:
-
-  import 'common'
-
-  include apt
-  include concat::setup
-  $puppetmaster_mode = 'passenger'
-  include puppet::puppetmaster
 
 
 Munin
 -----
 
 If you are using munin, and have the puppet munin module installed, you can set
-the variable $use_munin = true to have graphs setup for you. The graphs that
+the parameter manage_munin => true to have graphs setup for you. The graphs that
 will be setup track memory usage by the running puppetmasters; track the average
 compile time of clients; and if you are using postgresql/mysql then a graph to
 monitor resource counts.
@@ -92,22 +84,20 @@ Reports cleanup:
 ---------------
 
 By default we clean up reports older than 30 days. If you want to change
-that, you can set $puppetmaster_cleanup_reports to one of the following
+that, you can set the parameter cleanup_reports to one of the following
 values:
 
-* 'X', where X is the amount of days you want to keep reports for
-* false, to disable reports cleanup
+* 'X', where X is the amount of days you want to keep reports for false, to
+* disable reports cleanup (use a value valid for the tidy resource)
 
 If your reports are in a different place than the default, you can set
-$puppetmaster_reports_dir to adjust their location.
+the reports_dir parameter to adjust their location.
 
 Check last run:
 ---------------
 
-We can check on the last run state of certain clients, to check whether
-they still check in. You can do that by setting the following variables:
-
-$puppetmaster_lastruncheck_cron
+We can check on the last run state of certain clients, to check whether they
+still check in. You can do that by setting the lastruncheck_cron parameter:
 
 * any cron time: '20 10,22 * * *' to run the script at a certain time
   by cron. Default: 40 10 * * *
@@ -120,15 +110,14 @@ Stored configs:
 
 If you want to use storedconfigs on your puppetmaster, there are some
 pre-requisite modules: mysql, rails. In your puppetmaster node definition you
-will need to set $mysql_rootpw to the mysql root password,
-$puppet_storeconfig_password to the puppet database password, and then set
-$puppetmaster_storeconfigs = true to enable stored configs. 
+will need to pass the password to the hasdb class and set the storeconfigs
+parameter to be true to enable stored configs.
 
 Then you will need to either put in your node definition, or in
 site_puppet/manifests/init.pp puppet::puppetmaster::hasdb to setup the database
 with the right parameters. This will setup your storeconfigs database, adding to
 the database the correct user, the correct grant permissions, and also setup
-a munin graph, if you have $use_munin = true
+a munin graph, if you have manage_munin => true
 
 Currently, only mysql is supported. See manifests/puppetmaster/hasdb.pp for the
 define variables you can set.
@@ -136,26 +125,16 @@ define variables you can set.
 Example:
 --------
 
-in your site.pp:
-
 node puppetmaster {
-  $mysql_rootpw = "foo"
-  $puppet_storeconfig_password = "bar"
-  $puppetmaster_storeconfigs = true
-  $use_munin = true
-  $puppetmaster_mode = 'passenger'
-  $puppet_crontime = "0,12 * * * *"
-  include site_puppet::master
-  include puppet::cron
-  include puppet::puppetmaster
+  class { 'puppet::master':
+    cron_time    => "0,12 * * * *",
+    storeconfigs => true,
+    mode         => 'passenger',
+    manage_munin => true
+  }
+  puppet::master::hasdb { 'puppet':
+    dbuser => 'puppet',
+    dbpwd  => 'bar'
+  }
 ...
-
-in your site_puppet/manifests/master.pp you could include something like:
-
-class site_puppet::master {
-      ...
-      puppet::puppetmaster::hasdb { "puppet":
-        dbname => 'puppetmaster',
-	dbuser => 'puppet'
-      }
 
