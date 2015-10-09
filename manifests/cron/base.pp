@@ -8,7 +8,7 @@ class puppet::cron::base inherits puppet::base {
 
   if !$puppet::cron::cron_time {
     $crontime_interval_minute = fqdn_rand(29)
-    $crontime_interval_minute2 = inline_template("<%= 30+scope.lookupvar('puppet::cron::cron_time').to_i %>")
+    $crontime_interval_minute2 = 30 + $crontime_interval_minute
     $crontime = "${crontime_interval_minute},${crontime_interval_minute2} * * * *"
   } else {
     $crontime = $puppet::cron::cron_time

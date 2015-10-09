@@ -1,6 +1,6 @@
 # run puppet agent as cron
 class puppet::cron(
-  $cron_time,
+  $cron_time                        = false,
   $stop_service                     = true,
   $config                           = '/etc/puppet/puppet.conf',
   $config_content                   = false,
